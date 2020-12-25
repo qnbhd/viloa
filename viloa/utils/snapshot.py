@@ -1,11 +1,12 @@
 import hashlib
 import os
-from collections import namedtuple
+from viloa.utils.repomixin import RepoMixin
 
 
-class Snapshot:
+class Snapshot(RepoMixin):
 
     def __init__(self):
+        RepoMixin.__init__(self)
         self.files = []
 
     def add_file(self, file):
@@ -17,18 +18,15 @@ class Snapshot:
             with open(file, "rb") as fin:
                 content = fin.read()
                 sha1hash = hashlib.sha1(content).hexdigest()
-                snap[file] = dict(
-                    content=content.decode("utf-8"),
-                    hash=sha1hash
-                )
+                snap[file] = sha1hash
         return snap
 
     @staticmethod
     def get_snap(repo, viloa_dir):
         snapshot = Snapshot()
-        for root, dirs, files in os.walk(repo):
-            if root == viloa_dir:
-                continue
+        SKELETONS_DIR = os.path.join(viloa_dir, RepoMixin.SKELETON_DIR)
+        for root, dirs, files in RepoMixin.excluded_walk(repo, [viloa_dir], [SKELETONS_DIR]):
+
             for file in files:
                 path = os.path.join(root, file)
                 snapshot.add_file(path)

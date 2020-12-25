@@ -5,7 +5,7 @@ from functools import wraps
 logging.basicConfig(format='[%(asctime)s] - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-colorama.init()
+colorama.init(autoreset=True)
 
 
 def set_color(color):

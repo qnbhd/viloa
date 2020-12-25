@@ -1,3 +1,8 @@
+from difflib import ndiff
+
+import colorama
+
+
 class Differencer:
 
     def __init__(self, old, new):
@@ -5,12 +10,47 @@ class Differencer:
         self.new = new
 
     def process(self):
-        old_lines = self.old.split('\n')
-        new_lines = self.new.split('\n')
-        difference = []
+        ADD_COM = '+'
+        DEL_COM = '-'
+        SKIP_COM = ' '
+        CONCRETE_COM = '?'
 
-        for line, old, new in enumerate(zip(old_lines, new_lines)):
-            if old != new:
-                difference.append((line, old, new))
+        def get_print_color(com):
+            DEFAULT = ""
+            if com == ADD_COM:
+                return colorama.Fore.GREEN
+            elif com == DEL_COM:
+                return colorama.Fore.RED
+            else:
+                return DEFAULT
 
-        return difference
+        old = self.old.splitlines(1)
+        new = self.new.splitlines(1)
+
+        line = 0
+
+        diff = list(ndiff(old, new))
+        result = []
+
+        for i in range(len(diff)):
+            command = diff[i][0]
+            ens = diff[i].replace('\n', '')
+
+            if command == CONCRETE_COM:
+                continue
+            if command == ADD_COM:
+                prev_command = result[-1][1]
+                if prev_command != DEL_COM:
+                    line += 1
+            else:
+                line += 1
+
+            color = get_print_color(command)
+            result.append([line, command, color + ens])
+
+        final = []
+
+        for line_, _, diff_ in result:
+            final.append(f"{line_}: {diff_}")
+
+        return final
