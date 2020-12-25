@@ -6,7 +6,7 @@ from viloa.utils.repomixin import RepoMixin
 from datetime import datetime
 
 from viloa.utils.snapshot import Snapshot
-from viloa import print_red, print_yellow
+from viloa import print_yellow
 from viloa.utils.differencer import Differencer
 from viloa import logger
 
@@ -20,14 +20,17 @@ class Diff(Scenario, RepoMixin):
     def run(self):
         if not self.is_initialized():
             logger.error(f"Repo {self.repo} isn't initialized")
+
         last = datetime.utcfromtimestamp(0)
         last_snapshot = None
         SPAN_VILOA = os.path.join(self.viloa_dir, self.SKELETON_DIR)
 
-        for root, _, files in self.excluded_walk(self.viloa_dir, [SPAN_VILOA], [SPAN_VILOA]):
+        for root, _, files in self.excluded_walk(
+            self.viloa_dir, [SPAN_VILOA], [SPAN_VILOA]
+        ):
             for file in files:
-                without_ext = file.split('.')[0]
-                date = datetime.strptime(without_ext, "%d-%m-%Y-%H-%M-%S")
+                snapname, *_ = file.split('.')
+                date = datetime.strptime(snapname, "%d-%m-%Y-%H-%M-%S")
                 if date > last:
                     last = date
                     last_snapshot = file
