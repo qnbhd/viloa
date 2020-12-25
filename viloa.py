@@ -30,18 +30,19 @@ diff = subparsers.add_parser(
 
 class Viloa:
 
-    def __init__(self, args):
+    def __init__(self, args: argparse.Namespace):
         self.args = args
 
+    def main(self):
         if self.args.scenario == INIT_SCENARIO:
-            initer = Init(args)
+            initer = Init(self.args)
             initer.run()
         if self.args.scenario == DIFF_SCENARIO:
-            differ = Diff(args)
+            differ = Diff(self.args)
             differ.run()
 
 
 if __name__ == '__main__':
-
-    args = parser.parse_args()
-    viloa = Viloa(args)
+    arguments = parser.parse_args()
+    viloa = Viloa(arguments)
+    viloa.main()

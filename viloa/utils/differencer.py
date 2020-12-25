@@ -1,6 +1,7 @@
 from difflib import ndiff
 
 import colorama
+from typing import List
 
 
 class Differencer:
@@ -9,7 +10,7 @@ class Differencer:
         self.old = old
         self.new = new
 
-    def process(self):
+    def process(self) -> List[str]:
         ADD_COM = '+'
         DEL_COM = '-'
         SKIP_COM = ' '

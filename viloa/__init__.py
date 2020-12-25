@@ -10,6 +10,7 @@ colorama.init(autoreset=True)
 
 def set_color(color):
     def worker(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             print(color, end='')
             func(*args, **kwargs)
