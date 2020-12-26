@@ -54,5 +54,6 @@ class Diff(Scenario, RepoMixin):
                     old = old_in.read()
                     new = new_in.read()
                     essence = Differencer(old, new).process()
-                    for ess in essence:
+                    colored_essence = Differencer.colored_output(essence)
+                    for ess in colored_essence:
                         print(ess)
