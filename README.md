@@ -1,4 +1,4 @@
-# Viloa - simple python VCS
+# Viloa - simple python-based VCS
 
 <img src="https://i.postimg.cc/RVh3RKfD/viloa.png" alt="drawing" width="300" height="300"/>
 
