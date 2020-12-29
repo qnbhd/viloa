@@ -1,6 +1,6 @@
 # Viloa - simple python VCS
 
-<img src="https://i.postimg.cc/RVh3RKfD/viloa.png" alt="drawing" width="200" height="200"/>
+<img src="https://i.postimg.cc/RVh3RKfD/viloa.png" alt="drawing" width="300" height="300"/>
 
 [![GitHub issues](https://img.shields.io/github/issues/qnbhd/viloa?style=for-the-badge)](https://github.com/qnbhd/viloa/issues) [![GitHub forks](https://img.shields.io/github/forks/qnbhd/viloa?style=for-the-badge)](https://github.com/qnbhd/viloa/network) [![GitHub stars](https://img.shields.io/github/stars/qnbhd/viloa?style=for-the-badge)](https://github.com/qnbhd/viloa/stargazers) [![GitHub license](https://img.shields.io/github/license/qnbhd/viloa?style=for-the-badge)](https://github.com/qnbhd/viloa/blob/master/LICENSE)
 
