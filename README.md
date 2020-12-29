@@ -15,17 +15,17 @@ Scenarios:
 
 Make virtual environment by 
 
-`bash
+`
 python -m venv .venv
 `
 
 and activate this venv. For next install requirements by
 
-`bash
+`
 pip install -r requirements.txt
 `
 
 
-`bash
+`
 python viloarunmain.py --repo [REPO DIR] [SCENARIO] [SCENARIO ARGS]
 `
