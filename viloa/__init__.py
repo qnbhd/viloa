@@ -5,7 +5,7 @@ from functools import wraps
 logging.basicConfig(format='[%(asctime)s] - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-colorama.init(autoreset=True)
+colorama.init(autoreset=False)
 
 
 def set_color(color):
@@ -14,6 +14,7 @@ def set_color(color):
         def wrapper(*args, **kwargs):
             print(color, end='')
             func(*args, **kwargs)
+            print(colorama.Style.RESET_ALL, end='')
 
         return wrapper
 
@@ -33,3 +34,8 @@ def print_yellow(*args, **kwargs):
 @set_color(colorama.Fore.RED)
 def print_red(*args, **kwargs):
     print(*args, **kwargs)
+
+
+def print_default(*args, **kwargs):
+    print(*args, **kwargs)
+    print(colorama.Style.RESET_ALL, end='')
