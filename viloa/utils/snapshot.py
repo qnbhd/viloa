@@ -15,19 +15,28 @@ class Snapshot(RepoMixin):
     def add_file(self, filename: str):
         self.files.append(filename)
 
-    def make(self) -> Dict[str, str]:
-        snap = dict()
+    def _make(
+        self, message: str = "", changes: dict = {}
+    ) -> Dict[str, str]:
+        snap = dict(
+            message=message,
+            files={}
+        )
 
         for file in self.files:
             with open(file, "rb") as fin:
                 content = fin.read()
-                sha1hash = hashlib.sha1(content).hexdigest()
-                snap[file] = sha1hash
-
+                file_dict = dict(
+                    sha1hash=hashlib.sha1(content).hexdigest()
+                )
+                file_dict["changes"] = changes.get(file, None) if changes else None
+                snap["files"][file] = file_dict
         return snap
 
     @staticmethod
-    def get_snap(repo: str, viloa_dir: str):
+    def get_snap(
+        repo: str, viloa_dir: str, message: str = "", changes: dict = None
+    ):
         snapshot = Snapshot()
         SKELETONS_DIR = os.path.join(viloa_dir, RepoMixin.SKELETON_DIR)
 
@@ -38,4 +47,4 @@ class Snapshot(RepoMixin):
                 path = os.path.join(root, file)
                 snapshot.add_file(path)
 
-        return snapshot.make()
+        return snapshot._make(message, changes)

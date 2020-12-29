@@ -7,8 +7,12 @@ from typing import List, Union, Any
 class Differencer:
     ADD_COM = '+'
     DEL_COM = '-'
-    SKIP_COM = ' '
+    EQUAL_COM = ' '
     CONCRETE_COM = '?'
+
+    ADD = "add"
+    DEL = "del"
+    EQUAL = "eq"
 
     def __init__(self, old, new):
         self.old = old
@@ -18,6 +22,12 @@ class Differencer:
         old = self.old.splitlines()
         new = self.new.splitlines()
 
+        bij = {
+            self.ADD_COM: self.ADD,
+            self.DEL_COM: self.DEL,
+            self.EQUAL_COM: self.EQUAL
+        }
+
         line: int = 0
 
         diff = list(ndiff(old, new))
@@ -25,7 +35,7 @@ class Differencer:
 
         for i in range(len(diff)):
             command: str = diff[i][0]
-            ens: str = diff[i].replace('\n', '')
+            ens: str = diff[i].replace('\n', '')[2:]
 
             if command == Differencer.CONCRETE_COM:
                 continue
@@ -36,7 +46,7 @@ class Differencer:
             else:
                 line += 1
 
-            result.append([line, command, ens])
+            result.append([line, bij[command], ens])
 
         return result
 
@@ -44,9 +54,9 @@ class Differencer:
     def colored_output(result):
         def get_print_color(com):
             DEFAULT = ""
-            if com == Differencer.ADD_COM:
+            if com == Differencer.ADD:
                 return colorama.Fore.GREEN
-            elif com == Differencer.DEL_COM:
+            elif com == Differencer.DEL:
                 return colorama.Fore.RED
             else:
                 return DEFAULT
