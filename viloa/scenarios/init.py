@@ -4,10 +4,7 @@ import os
 import json
 from datetime import datetime
 from viloa.utils.repomixin import RepoMixin
-import logging
 from viloa import logger
-import pathlib
-import shutil
 
 
 class Init(Scenario, RepoMixin):
@@ -19,19 +16,18 @@ class Init(Scenario, RepoMixin):
     def initialize_repo(self):
         os.mkdir(self.viloa_dir)
 
-    def run(self):
-        if not self.is_initialized():
-            self.initialize_repo()
-        else:
-            logger.warning(f"Repo {self.repo} was initialized previously")
-            return
-
-        snap = Snapshot.get_snap(
-            self.repo, self.viloa_dir, "init")
-        self.make_span()
+        snap = Snapshot.get_snap(self.repo, self.viloa_dir, "init")
+        self.make_skeleton()
 
         snap_filename = self._get_snap_filename(datetime.now())
         snap_filename = os.path.join(self.viloa_dir, snap_filename)
 
         with open(snap_filename, "w") as fout:
             fout.write(json.dumps(snap, indent=self.JSON_INDENT_LEVEL))
+
+    def run(self):
+        if self.is_initialized():
+            logger.warning(f"Repo {self.repo} was initialized previously")
+            return
+
+        self.initialize_repo()

@@ -8,12 +8,11 @@ class RepoMixin:
     VILOA_DIR = ".viloa"
     SKELETON_DIR = ".skeleton"
     SNAPSHOT_EXT = ".snap"
-    JSON_INDENT_LEVEL = None
+    JSON_INDENT_LEVEL = 2
 
-    def __init__(self, args=None):
-        if args:
-            self.repo = args.repo
-            self.viloa_dir = os.path.join(self.repo, RepoMixin.VILOA_DIR)
+    def __init__(self, args):
+        self.repo = args.repo
+        self.viloa_dir = os.path.join(self.repo, RepoMixin.VILOA_DIR)
 
     def is_initialized(self) -> bool:
         return os.path.isdir(self.viloa_dir)
@@ -43,12 +42,14 @@ class RepoMixin:
         dirname = os.path.join(self.viloa_dir, self.SKELETON_DIR, dirname)
         return dirname
 
-    def make_span(self):
+    def make_skeleton(self):
         VILOA = self.viloa_dir
         SPAN_VILOA = os.path.join(self.viloa_dir, self.SKELETON_DIR)
         IGNORE_PATHS = [VILOA, SPAN_VILOA]
 
-        for root, dirs, files in self.excluded_walk(self.repo, IGNORE_PATHS, IGNORE_PATHS):
+        for root, dirs, files in self.excluded_walk(
+            self.repo, IGNORE_PATHS, IGNORE_PATHS
+        ):
             for file in files:
                 dirname = self._get_file_dir(root, file)
                 pathlib.Path(dirname).mkdir(parents=True, exist_ok=True)

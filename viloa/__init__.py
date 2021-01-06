@@ -20,18 +20,31 @@ def set_color(color):
 
     return worker
 
+def set_color_new(func=None, *, color=""):
 
-@set_color(colorama.Fore.GREEN)
+    if func is None:
+        return lambda func_: set_color_new(func_, color=color)
+
+    @wraps(func)
+    def inner(*args, **kwargs):
+        print(color, end='')
+        func(*args, **kwargs)
+        print(colorama.Style.RESET_ALL, end='')
+
+    return inner
+
+
+@set_color_new(color=colorama.Fore.GREEN)
 def print_green(*args, **kwargs):
     print(*args, **kwargs)
 
 
-@set_color(colorama.Fore.YELLOW)
+@set_color_new(color=colorama.Fore.YELLOW)
 def print_yellow(*args, **kwargs):
     print(*args, **kwargs)
 
 
-@set_color(colorama.Fore.RED)
+@set_color_new(color=colorama.Fore.RED)
 def print_red(*args, **kwargs):
     print(*args, **kwargs)
 

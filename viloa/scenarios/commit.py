@@ -32,5 +32,5 @@ class Commit(Scenario, RepoMixin):
         with open(snap_filename, "w") as fout:
             fout.write(json.dumps(snap, indent=self.JSON_INDENT_LEVEL))
 
-        self.make_span()
+        self.make_skeleton()
 

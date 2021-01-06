@@ -39,6 +39,7 @@ commit.add_argument(
     required=True
 )
 
+
 class Viloa:
 
     def __init__(self, args: argparse.Namespace):
@@ -54,7 +55,6 @@ class Viloa:
         if self.args.scenario == COMMIT_SCENARIO:
             commiter = Commit(self.args)
             commiter.run()
-
 
 
 if __name__ == '__main__':
